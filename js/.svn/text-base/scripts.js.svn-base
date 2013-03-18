@@ -1,0 +1,71 @@
+/*
+* Tadpole V1.0
+* Copyright 2012, Clive Moore
+* www.clivemoore.com
+* Free to use under the MIT license.
+* http://www.opensource.org/licenses/mit-license.php
+* 4/05/2012
+*/
+
+
+(function (jQuery) {
+  // hash change handler
+  function hashchange () {
+    var hash = window.location.hash
+      , el = $('ul.tabs [href*="' + hash + '"]')
+      , content = $(hash)
+
+    if (el.length && !el.hasClass('active') && content.length) {
+      el.closest('.tabs').find('.active').removeClass('active');
+      el.addClass('active');
+      content.show().addClass('active').siblings().hide().removeClass('active');
+    }
+  }
+
+  // listen on event and fire right away
+  jQuery(window).on('hashchange.tadpole', hashchange);
+  hashchange();
+  jQuery(hashchange);
+})(jQuery);
+
+jQuery(document).ready(function() {
+
+	jQuery('ul.mainnav a').smoothScroll();
+	
+	jQuery('ul.nav li').click(function(){
+		$(this).siblings().removeClass('active');
+		$(this).addClass('active');
+	});
+	
+	jQuery('.slideshow').cycle();
+		
+	jQuery('#feature').cycle({ 
+	    fx:     'fade',
+		next:   '#next_slide',
+		prev:   '#prev_slide', 
+	    timeout: 5000, 
+	    before:  onBefore, 
+	    after:   onAfter 
+	});
+
+}); 
+
+function onBefore() { 
+	jQuery('#output').html(this.alt); 
+}
+ 
+function onAfter() { 
+	jQuery('#output').html(this.alt); 
+}
+
+jQuery('.openWhat').click(function(){
+	var thisOfCourse = $(this).attr("rel");
+	if(jQuery('#'+$(this).attr("rel")).hasClass('hide')){
+		jQuery('#'+thisOfCourse+'').slideDown('fast');
+		jQuery('#'+thisOfCourse+'').removeClass('hide');
+	} else {
+		jQuery('#'+thisOfCourse+'').slideUp('fast');
+		jQuery('#'+thisOfCourse+'').addClass('hide');
+	}
+});
+
